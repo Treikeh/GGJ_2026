@@ -1,3 +1,13 @@
+require "maskTool"
+
+function love.load()
+    maskToolInit()
+end
+
+function love.update(dt)
+    maskToolUpdate(dt)
+end
+
 function love.draw()
-    love.graphics.print("Hello World", 400, 300)
+    maskToolDraw()
 end
