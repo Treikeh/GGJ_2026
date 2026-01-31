@@ -3,9 +3,6 @@ local trigger = {
     y = 300,
     w = 80,
     h = 40,
-    body,
-    shape,
-    fixture,
 }
 
 local message = ""

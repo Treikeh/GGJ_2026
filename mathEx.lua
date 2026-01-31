@@ -12,3 +12,10 @@ function sumArray(numberArray)
 
     return sum
 end
+
+function normalizeVector(x, y)
+    local length = math.sqrt(x^2 + y^2)
+    local newX = x / length
+    local newY = y / length
+    return newX, newY
+end

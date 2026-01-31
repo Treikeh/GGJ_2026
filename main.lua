@@ -3,13 +3,14 @@ require "endTrigger"
 require "ball"
 require "mainMenu"
 require "resetMenu"
+require "materials"
 
 screenWidth = 720
 screenHeight = 480
 
 local gameState = {
-    menu = true, 
-    running = false,
+    menu = false, 
+    running = true,
     reset = false,
 }
 
@@ -23,7 +24,7 @@ function love.load()
     world = love.physics.newWorld(0, 9.8 * 40, true)
 
     spawnBall()
-    spawnTrigger()
+    --spawnTrigger()
 end
 
 
@@ -31,12 +32,12 @@ function love.draw()
     -- Reset colour
     love.graphics.setColor(1, 1, 1)
 
-
     if gameState["menu"] then
         drawMainMenu()
     elseif gameState["running"] then
+        drawMaterials()
         drawBall()
-        drawTrigger()
+        --drawTrigger()
         maskToolDraw()
     elseif gameState["reset"] then
         drawResetMenu()
@@ -49,7 +50,7 @@ function love.update(dt)
     if gameState["running"] then
         maskToolUpdate(dt)
         
-        updateBall()
+        updateBall(materials)
         world:update(dt)
     end
 end
@@ -63,7 +64,7 @@ function love.keypressed(key)
     elseif gameState["reset"] then
         if key == "r" then
             resetBall()
-            resetTrigger()
+            --resetTrigger()
             changeGameState("running")
         end
     end
