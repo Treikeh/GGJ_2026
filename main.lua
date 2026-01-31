@@ -14,8 +14,6 @@ local gameState = {
     reset = false,
 }
 
-
-
 function love.load()
     love.window.setMode(screenWidth, screenHeight)
     love.graphics.setBackgroundColor(0.1, 0, 0)
@@ -47,12 +45,12 @@ end
 
 
 function love.update(dt)
-    if gameState["running"] then
-        maskToolUpdate(dt)
+    maskToolUpdate(dt)
+    --[[ if gameState["running"] then
         
         updateBall(materials)
         world:update(dt)
-    end
+    end ]]
 end
 
 
