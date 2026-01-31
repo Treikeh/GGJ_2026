@@ -16,15 +16,9 @@ function spawnBall()
     ball.fixture = love.physics.newFixture(ball.body, ball.shape)
     ball.fixture:setUserData("Ball")
 
-    --local spawnPadding = 100
-    --local newX = love.math.random(spawnPadding, screenWidth - spawnPadding)
-    --local newY = love.math.random(spawnPadding, screenHeight - spawnPadding)
-    --ball.body:setLinearVelocity(0, 0)
-    --ball.body:setPosition(newX, newY)
-
-    ball.body:setLinearVelocity(200, 0)
-
-    --launchBallTowardsCenter()
+    randomizeBallPos()
+    randomizeBallColor()
+    launchBallTowardsCenter()
 end
 
 
@@ -37,6 +31,10 @@ end
 
 
 function updateBall(materials)
+    -- Set default parameter
+    materials = materials or {}
+
+    -- Update ball x and y position to the balls body position
     ball.x, ball.y = ball.body:getPosition()
 
     -- Wrap ball back to top or bottom
@@ -61,13 +59,13 @@ function updateBall(materials)
         isBallInMaterial(polygons, i)
     end
 
+    -- Change physics based on the current material
     if ball.matType == 0 then
         applyNoneMaterial()
-    -- SPACE
     elseif ball.matType == 1 then
-        applySpaceMaterial()
-    elseif ball.matType == 2 then
         applyUpsideDownMaterial()
+    elseif ball.matType == 2 then
+        applySpaceMaterial()
     end
 
     debugMsg = string.format("mat type: %s", ball.matType)
@@ -90,24 +88,31 @@ end
 
 
 function resetBall()
-    -- Spawn ball in randon position
+    randomizeBallPos()
+    randomizeBallColor()
+
+    updateBall()
+    launchBallTowardsCenter()
+end
+
+
+function randomizeBallPos()
     local spawnPadding = 100
     local newX = love.math.random(spawnPadding, screenWidth - spawnPadding)
     local newY = love.math.random(spawnPadding, screenHeight - spawnPadding)
     ball.body:setLinearVelocity(0, 0)
     ball.body:setPosition(newX, newY)
+end
 
+
+function randomizeBallColor()
     -- Set ball color to a new random
-    --local newR = love.math.random(0, 1)
-    --local newG = love.math.random(0, 1)
-    --local newB = love.math.random(0, 1)
-    --ball.color.r = newR
-    --ball.color.g = newG
-    --ball.color.b = newB
-    --updateBall()
-
-    updateBall()
-    --launchBallTowardsCenter()
+    local newR = love.math.random(0, 1)
+    local newG = love.math.random(0, 1)
+    local newB = love.math.random(0, 1)
+    ball.color.r = newR
+    ball.color.g = newG
+    ball.color.b = newB
 end
 
 
@@ -117,8 +122,6 @@ function launchBallTowardsCenter()
     local dirX, dirY = normalizeVector(centerX - ball.x, centerY - ball.y)
     local force = love.math.random(150, 400)
     ball.body:setLinearVelocity(dirX * force, dirY * force)
-
-    --debugMsg = dirX .. " " .. dirY
 end
 
 
@@ -135,9 +138,7 @@ end
 
 function isBallInPolygon(x, y, vertices)
     local result = false
-
     local len = #vertices
-
     for i = 1, #vertices do
         local insideX = vertices[i].x < x and vertices[len].x >= x or vertices[len].x < x and vertices[i].x >= x
         if insideX then

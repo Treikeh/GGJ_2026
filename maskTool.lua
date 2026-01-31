@@ -4,10 +4,11 @@ local maskToolPositions = {}
 local maskToolDistances = {}  
 local maskToolLength = 1000
 
-local lineSegments = {}
+lineSegments = {}
 
 local POINTDENSITY = 3
 
+currentBrush = 1
 local drawing = false
 
 function maskToolInit()
@@ -130,6 +131,7 @@ function removeLinePoint()
 end
 
 function maskToolDraw()
+    love.graphics.setColor(0, 1, 0)
     local linePositions = convertToIntArray(maskToolPositions)
 
     if #linePositions >= 4 then
