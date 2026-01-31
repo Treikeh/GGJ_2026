@@ -1,4 +1,5 @@
-require "mathEx"
+require "Functionality.mathEx"
+require "Functionality.randomize"
 
 local ball = {
     x = 10,
@@ -16,11 +17,16 @@ function spawnBall()
     ball.fixture = love.physics.newFixture(ball.body, ball.shape)
     ball.fixture:setUserData("Ball")
 
-    randomizeBallPos()
-    randomizeBallColor()
-    launchBallTowardsCenter()
+    resetBall()
 end
 
+function resetBall()
+    randomizeBallPos()
+    ball.color = getRandomColor()
+
+    updateBall()
+    launchBallTowardsCenter()
+end
 
 function drawBall()
     love.graphics.print(debugMsg, 40, 40)
@@ -54,8 +60,8 @@ function updateBall(materials)
     -- Check which material the ball is inside
     ball.matType = 0 -- Reset so that we can check again every frame
     for i = 1, #materials do
-        -- NOTE: Might want to add a if statement to check if matType == 0
-        local polygons = materials[i]
+        -- NOTE: Might want to add an if statement to check if matType == 0
+        local polygons = materials[i].lineSegments
         isBallInMaterial(polygons, i)
     end
 
@@ -77,23 +83,16 @@ function applyNoneMaterial()
 end
 
 
-function applySpaceMaterial()
-    ball.body:setGravityScale(0)
-end
-
-
 function applyUpsideDownMaterial()
     ball.body:setGravityScale(-3)
 end
 
 
-function resetBall()
-    randomizeBallPos()
-    randomizeBallColor()
-
-    updateBall()
-    launchBallTowardsCenter()
+function applySpaceMaterial()
+    ball.body:setGravityScale(0)
 end
+
+
 
 
 function randomizeBallPos()
@@ -102,17 +101,6 @@ function randomizeBallPos()
     local newY = love.math.random(spawnPadding, screenHeight - spawnPadding)
     ball.body:setLinearVelocity(0, 0)
     ball.body:setPosition(newX, newY)
-end
-
-
-function randomizeBallColor()
-    -- Set ball color to a new random
-    local newR = love.math.random(0, 1)
-    local newG = love.math.random(0, 1)
-    local newB = love.math.random(0, 1)
-    ball.color.r = newR
-    ball.color.g = newG
-    ball.color.b = newB
 end
 
 

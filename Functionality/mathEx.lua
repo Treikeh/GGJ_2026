@@ -17,6 +17,16 @@ function sumArray(numberArray)
     return sum
 end
 
+function convertToIntArray(vector2Array)
+    local intArray = {}
+    for i = 1, #vector2Array, 1 do
+        table.insert(intArray, vector2Array[i].x)
+        table.insert(intArray, vector2Array[i].y)
+    end
+
+    return intArray
+end
+
 function normalizeVector(x, y)
     local length = math.sqrt(x^2 + y^2)
     local newX = x / length

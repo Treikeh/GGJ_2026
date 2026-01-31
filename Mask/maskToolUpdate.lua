@@ -1,30 +1,36 @@
-require "mathEx"
-
-local maskToolPositions = {}  
-local maskToolDistances = {}  
-local maskToolLength = 1000
-
-lineSegments = {}
-
-local POINTDENSITY = 3
-
-currentBrush = 1
-local drawing = false
+require "Functionality.mathEx"
+require "Mask.maskMaterials"
+require "Mask.maskToolData"
 
 function maskToolInit()
     love.graphics.setLineStyle( "smooth" )
     love.graphics.setLineWidth( 3 )
 end
 
+local holdingM2 = false
+
 function maskToolUpdate(dt)
     if love.mouse.isDown(1) then
         addLine()
     else
         if #maskToolPositions > 0 and drawing then
-            drawing = false 
+            drawing = false
 
             splitToPolygons() 
         end
+    end
+
+    if love.mouse.isDown(2) then
+        if not holdingM2 then
+            currentBrush = currentBrush + 1
+            if currentBrush > #maskMaterials then
+                currentBrush = 1
+            end
+        end
+
+        holdingM2 = true
+    else
+        holdingM2 = false
     end
 end
 
@@ -46,7 +52,7 @@ function addLine()
         addLinePoint(mouseX, mouseY, distanceFromLastPoint)
     end
 
-    while sumArray(maskToolDistances) > maskToolLength do
+    while sumArray(maskToolDistances) > getCurrentMaterial().usageLeft do
         removeLinePoint()
     end
 end
@@ -71,22 +77,21 @@ function splitToLineSegments(wholeLinePoints)
     print(#crossPointIndexes)
     print(table.concat(crossPointIndexes, ", "))
 
-    lineSegments = {{}}
-    local lineSegmentIndex = 1
+    local lineSegmentIndex = #getCurrentMaterial().lineSegments
 
     for i = 1, #wholeLinePoints - 1, 1 do
 
         for j = 1, #crossPointIndexes, 1 do
             if crossPointIndexes[j] == i then
-                if #lineSegments[lineSegmentIndex] > 10 then
+                if #getCurrentMaterial().lineSegments[lineSegmentIndex] > 10 then
                     lineSegmentIndex = lineSegmentIndex + 1
-                    table.insert(lineSegments, {})
+                    table.insert(getCurrentMaterial().lineSegments, {})
                 end
 
-                wholeLinePoints[i] = {x=wholeLinePoints[i + 1].x, y=wholeLinePoints[i + 1].y}
+                -- wholeLinePoints[i] = {x=wholeLinePoints[i + 1].x, y=wholeLinePoints[i + 1].y}
             end
         end
-        table.insert(lineSegments[lineSegmentIndex], wholeLinePoints[i])
+        table.insert(getCurrentMaterial().lineSegments[lineSegmentIndex], wholeLinePoints[i])
     end
     
 end
@@ -128,52 +133,4 @@ end
 function removeLinePoint()
     table.remove(maskToolPositions, 1)
     table.remove(maskToolDistances, 1)
-end
-
-function maskToolDraw()
-    love.graphics.setColor(0, 1, 0)
-    local linePositions = convertToIntArray(maskToolPositions)
-
-    if #linePositions >= 4 then
-        
-        if drawing then
-            love.graphics.line(linePositions)
-        else
-            for i = 1, #lineSegments, 1 do
-                -- print("SEGMENT ", i, "LENGTH", #lineSegments[i])
-                if #lineSegments[i] > 3 then
-                    drawMaskShape(convertToIntArray(lineSegments[i]))
---[[                     love.graphics.setColor(love.math.colorFromBytes(128, 50 * i, 255))
-                    love.graphics.line(convertToIntArray(lineSegments[i]))
- ]]                end
-            end
-            print("")
-        end
-    end
-end
-
-function drawMaskShape(vertices)
-    if #maskToolPositions < 3 then return end
-    local ok, result = pcall(love.math.triangulate, vertices)
-
-    if not ok then
-        -- print("Triangulation error:", result)
-        return
-    end
-
-    local triangles = result
-
-    for i, triangle_vertices in ipairs(triangles) do
-        love.graphics.polygon("fill", triangle_vertices)
-    end
-end
-
-function convertToIntArray(vector2Array)
-    local intArray = {}
-    for i = 1, #vector2Array, 1 do
-        table.insert(intArray, vector2Array[i].x)
-        table.insert(intArray, vector2Array[i].y)
-    end
-
-    return intArray
 end

@@ -1,8 +1,14 @@
-require "maskTool"
-require "endTrigger"
-require "ball"
-require "mainMenu"
-require "resetMenu"
+require "Mask.maskToolData"
+require "Mask.maskToolDraw"
+require "Mask.maskToolUpdate"
+require "Mask.maskMaterials"
+
+require "Ball.endTrigger"
+require "Ball.ball"
+
+require "UI.mainMenu"
+require "UI.resetMenu"
+require "UI.gameUI"
 
 
 screenWidth = 720
@@ -18,9 +24,10 @@ local gameState = {
 
 
 function love.load()
-    love.window.setTitle("AAAAAAAHHHHHH!!!!!!")
+    love.window.setTitle("Weeeee!!")
     love.window.setMode(screenWidth, screenHeight)
-    love.graphics.setBackgroundColor(0.1, 0, 0)
+
+    setRandomBG()
 
     world = love.physics.newWorld(0, 9.8 * 40, true)
 
@@ -42,7 +49,7 @@ function love.draw()
         --drawTrigger()
         drawBall()
 
-        love.graphics.print(string.format("Current brush: %s", currentBrush), 40, 60)
+        drawUI()
     elseif gameState["reset"] then
         drawResetMenu()
     end
@@ -54,12 +61,7 @@ function love.update(dt)
     maskToolUpdate(dt)
     if gameState["running"] then
 
-        -- Set the materials that will be used be the ball
-        materials = {
-            lineSegments,
-        }
-
-        updateBall(materials)
+        updateBall(maskMaterials)
         world:update(dt)
     end
 end
@@ -74,13 +76,21 @@ function love.keypressed(key)
         if key == "1" then currentBrush = 1 end
         if key == "2" then currentBrush = 2 end
         if key == "3" then currentBrush = 3 end
+        
+        resetKey(key)
+
     elseif gameState["reset"] then
-        if key == "r" then
-            lineSegments = {}
-            resetBall()
-            --resetTrigger()
-            changeGameState("running")
-        end
+        resetKey(key)
+    end
+end
+
+function resetKey(key)
+    if key == "r" then
+        lineSegments = {}
+        resetBall()
+        --resetTrigger()
+        changeGameState("running")
+        setRandomBG()
     end
 end
 
