@@ -49,3 +49,13 @@ function endContact(fixtureA, fixtureB, contact)
         message = ""
     end
 end
+
+
+function resetTrigger()
+    -- Spawn trigger in new position
+    local spawnPadding = 100
+    local newX = love.math.random(spawnPadding, screenWidth - spawnPadding)
+    local newY = love.math.random(spawnPadding, screenHeight - spawnPadding)
+    trigger.body:setLinearVelocity(0, 0)
+    trigger.body:setPosition(newX, newY)
+end
