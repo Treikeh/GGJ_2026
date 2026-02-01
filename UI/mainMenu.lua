@@ -1,29 +1,7 @@
 local cornerRadius = 15
 local panelPadding = 50
 
-local mainMenuShaderCode = [[
-    extern float time;
-    vec4 effect(vec4 color, Image image, vec2 uvs, vec2 screen_coords) {
-        float r = sin(time);
-        float g = sin(time) * 2;
-        float b = sin(time) * 3;
-        vec4 pixel = vec4(r, g, b, 1);
-        return pixel;
-    }
-]]
-
-
-function createShader()
-    mainMenuShader = love.graphics.newShader(mainMenuShaderCode)
-end
-
 function drawMainMenu()
-    -- Background panel
-    love.graphics.setShader(mainMenuShader)
-    mainMenuShader:send("time", time)
-    love.graphics.rectangle("fill", 0, 0, screenWidth, screenHeight)
-    love.graphics.setShader()
-    
     -- Press start text
     love.graphics.setColor(TextColor.r, TextColor.g, TextColor.b)
 

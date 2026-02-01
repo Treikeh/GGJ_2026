@@ -36,7 +36,6 @@ function love.load()
     BGColor = getRandomColor()
     TextColor = getRandomColor()
 
-    createShader()
     setRandomBG()
 
     world = love.physics.newWorld(0, gravityForce, true)
