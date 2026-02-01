@@ -48,6 +48,8 @@ function destoryObstacles()
     for i = 1, #obstacles do
         local obstacle = obstacles[i]
         obstacle.fixture:destroy()
+        obstacle.body:destroy()
+        obstacle.shape:destroy()
     end
 end
 
