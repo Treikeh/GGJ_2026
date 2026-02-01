@@ -70,9 +70,9 @@ function updateBall(materials)
     if ball.matType == 0 then
         applyNoneMaterial()
     elseif ball.matType == 1 then
-        applyUpMaterial()
-    elseif ball.matType == 2 then
         applyLeftMaterial()
+    elseif ball.matType == 2 then
+        applyUpMaterial()
     elseif ball.matType == 3 then
         applyRightMaterial()
     end
