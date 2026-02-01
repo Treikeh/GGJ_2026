@@ -85,7 +85,7 @@ end
 
 
 function applyUpMaterial()
-    ball.body:setGravityScale(-3)
+    ball.body:applyForce(0, -600)
 end
 
 
