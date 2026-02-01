@@ -79,7 +79,8 @@ function getRandomWinQuote()
         "I AM PROUD OF ME",
         "YOU DID IT",
         "YEA",
-        ":)"
+        ":)",
+        "🧇",
     }
 
     return winQuotes[love.math.random(#winQuotes)]
