@@ -19,15 +19,22 @@ end
 function drawMasks()
     for i = 1, #maskMaterials, 1 do
         for j = 1, #maskMaterials[i].lineSegments, 1 do
-            if #maskMaterials[i].lineSegments[j] > 3 then
-                setToMaterialColor(i)
-                drawMaskShape(convertToIntArray(maskMaterials[i].lineSegments[j]))
+            local lineSegments = maskMaterials[i].lineSegments[j]
 
-                love.graphics.setColor(0, 0, 0)
-                love.graphics.line(convertToIntArray(maskMaterials[i].lineSegments[j]))
-            end 
+            if lineSegments == nil then
+                return
+            end
+
+            for k = 1, #lineSegments, 1 do
+                if #lineSegments[k] > 3 then
+                    setToMaterialColor(i)
+                    drawMaskShape(convertToIntArray(lineSegments[k]))
+
+                    love.graphics.setColor(0, 0, 0)
+                    love.graphics.line(convertToIntArray(lineSegments[k]))
+                end 
+            end
         end
-
     end
 end
 

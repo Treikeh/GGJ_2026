@@ -15,13 +15,13 @@ function addMaterial(name, amount, color)
         name=name,
         usageLeft=amount,
         color=color,
-        lineSegments = {{}}
+        lineSegments = {}
     })
 end
 
 function resetMaterials()
     for i = 1, #maskMaterials, 1 do
-        maskMaterials[i].lineSegments = {{}}
+        maskMaterials[i].lineSegments = {}
     end    
 end
 
@@ -33,4 +33,9 @@ addMaterial("ABA", 1000, getRandomColor())
 
 function getCurrentMaterial()
     return maskMaterials[currentBrush];
+end
+
+function getCurrentLineSegments()
+    local lineSegments = getCurrentMaterial().lineSegments
+    return lineSegments[#lineSegments]
 end

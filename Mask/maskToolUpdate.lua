@@ -20,6 +20,10 @@ function maskToolUpdate(dt)
         end
     end
 
+    checkSwapBrush()
+end
+
+function checkSwapBrush()
     if love.mouse.isDown(2) then
         if not holdingM2 then
             currentBrush = currentBrush + 1
@@ -38,10 +42,7 @@ function addLine()
     local mouseX, mouseY = love.mouse.getPosition( )
     
     if #maskToolPositions == 0 or not drawing then
-        drawing = true
-        maskToolPositions = {}  
-        maskToolDistances = {}  
-        addLinePoint(mouseX, mouseY, 0)
+        initializeDrawing()
         return
     end
     
@@ -52,19 +53,34 @@ function addLine()
         addLinePoint(mouseX, mouseY, distanceFromLastPoint)
     end
 
+    -- Remove oldest points if line is too long
     while sumArray(maskToolDistances) > getCurrentMaterial().usageLeft do
         removeLinePoint()
     end
 end
 
+function initializeDrawing()
+    drawing = true
+
+    local mouseX, mouseY = love.mouse.getPosition( )
+
+    table.insert(getCurrentMaterial().lineSegments, {{}})
+    maskToolPositions = {}  
+    maskToolDistances = {}  
+    addLinePoint(mouseX, mouseY, 0)
+end
+
 function splitToPolygons()
+
+    -- Amount of points to be placed between start and end of selection
     local linePoints = distanceBetween(
         maskToolPositions[1].x, maskToolPositions[1].y, 
         maskToolPositions[#maskToolPositions].x, maskToolPositions[#maskToolPositions].y
     ) / POINTDENSITY
 
+    -- Placing points in a line equally spaced between end and start 
     for i = 1, linePoints, 1 do
-        v = lerpVector(maskToolPositions[1], maskToolPositions[#maskToolPositions], 1+(0.5/linePoints)-(1/linePoints)*i)
+        v = lerpVector(maskToolPositions[#maskToolPositions], maskToolPositions[1], (1/linePoints)*i)
         addLinePoint(v.x, v.y, 0)
     end
 
@@ -77,21 +93,31 @@ function splitToLineSegments(wholeLinePoints)
     print(#crossPointIndexes)
     print(table.concat(crossPointIndexes, ", "))
 
-    local lineSegmentIndex = #getCurrentMaterial().lineSegments
+    local lineSegmentIndex = 1
+    local currentSegments = 0
 
+    -- Add points to line segments, splitting into new lines at each cross point
     for i = 1, #wholeLinePoints - 1, 1 do
 
         for j = 1, #crossPointIndexes, 1 do
-            if crossPointIndexes[j] == i then
-                if #getCurrentMaterial().lineSegments[lineSegmentIndex] > 10 then
-                    lineSegmentIndex = lineSegmentIndex + 1
-                    table.insert(getCurrentMaterial().lineSegments, {})
-                end
 
-                -- wholeLinePoints[i] = {x=wholeLinePoints[i + 1].x, y=wholeLinePoints[i + 1].y}
+            -- Cross point reached, split into new line
+            if crossPointIndexes[j] == i then
+
+                if currentSegments > 10 then
+                    lineSegmentIndex = lineSegmentIndex + 1
+                    currentSegments = 0
+
+                    -- Current material -> Current line segments -> Add a new set of segments
+                    table.insert(getCurrentMaterial().lineSegments[#getCurrentMaterial().lineSegments], {})
+                end
+                
             end
         end
-        table.insert(getCurrentMaterial().lineSegments[lineSegmentIndex], wholeLinePoints[i])
+
+        currentSegments = currentSegments + 1
+        -- Current material -> Current line segments -> Current line segment -> Add point to segment
+        table.insert(getCurrentMaterial().lineSegments[#getCurrentMaterial().lineSegments][lineSegmentIndex], wholeLinePoints[i])
     end
     
 end

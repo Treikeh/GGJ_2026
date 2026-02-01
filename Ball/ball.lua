@@ -61,8 +61,11 @@ function updateBall(materials)
     ball.matType = 0 -- Reset so that we can check again every frame
     for i = 1, #materials do
         -- NOTE: Might want to add an if statement to check if matType == 0
-        local polygons = materials[i].lineSegments
-        isBallInMaterial(polygons, i)
+        local segmentList = materials[i].lineSegments
+        for j = 1, #segmentList, 1 do
+            local polygons = segmentList[j]
+            isBallInMaterial(polygons, i)
+        end
     end
 
     -- Change physics based on the current material
