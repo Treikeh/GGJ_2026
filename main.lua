@@ -96,6 +96,7 @@ function resetKey(key)
         resetObstacles()
         changeGameState("running")
         setRandomBG()
+        resetMaterials()
     end
 end
 

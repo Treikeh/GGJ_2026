@@ -16,6 +16,7 @@ function maskToolUpdate(dt)
         if #maskToolPositions > 0 and drawing then
             drawing = false
 
+            getCurrentMaterial().usageLeft = getCurrentMaterial().usageLeft - sumArray(maskToolDistances)
             splitToPolygons() 
         end
     end

@@ -20,16 +20,15 @@ function addMaterial(name, amount, color)
 end
 
 function resetMaterials()
-    for i = 1, #maskMaterials, 1 do
-        maskMaterials[i].lineSegments = {}
-    end    
+    maskMaterials = {}
+
+    addMaterial("Space", 1000, getRandomColor())
+    addMaterial("Bab", 1000, getRandomColor())
+    addMaterial("ABA", 1000, getRandomColor())
 end
 
 maskMaterials = {}
-
-addMaterial("Space", 1000, getRandomColor())
-addMaterial("Bab", 1000, getRandomColor())
-addMaterial("ABA", 1000, getRandomColor())
+resetMaterials()
 
 function getCurrentMaterial()
     return maskMaterials[currentBrush];
