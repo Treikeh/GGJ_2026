@@ -4,7 +4,7 @@ require "Functionality.randomize"
 local spawnPadding = 50
 
 local minObstacles, maxObstacles = 7, 9
-local obstacles = {}
+obstacles = {}
 
 local rectMinSize, rectMaxSize = 20, 200
 local minRadius, maxRadius = 20, 100

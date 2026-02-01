@@ -17,7 +17,6 @@ function spawnTrigger()
     trigger.fixture = love.physics.newFixture(trigger.body, trigger.shape)
     trigger.fixture:setUserData("Trigger")
     trigger.fixture:setSensor(true)
-
     trigger.color = getRandomColor()
 
     world:setCallbacks(beginContact, endContact)
@@ -55,18 +54,37 @@ function endContact(fixtureA, fixtureB, contact)
 end
 
 
-function resetTrigger()
-    randomizeTriggerPos()
+function resetTrigger(obstacles)
+    randomizeTriggerPos(obstacles)
     trigger.color = getRandomColor()
 end
 
 
-function randomizeTriggerPos()
-    local spawnPadding = 100
-    local newX = love.math.random(spawnPadding, screenWidth - spawnPadding)
-    local newY = love.math.random(spawnPadding, screenHeight - spawnPadding)
+function randomizeTriggerPos(obstacles)
+    local obstacle = obstacles[love.math.random(1, #obstacles)]
+    local newX = obstacle.pos.x
+    local newY = obstacle.pos.y
+
+    if obstacle.type == 1 then
+        --
+        local dirX, dirY = love.math.random(-obstacle.size.w, obstacle.size.w), love.math.random(-obstacle.size.h, obstacle.size.h)
+        newX = newX + dirX
+        newY = newY + dirY
+    elseif obstacle.type == 2 then
+        local dirX, dirY = normalizeVector(love.math.random(-255, 255), love.math.random(-255, 255))
+        newX = newX + (dirX * obstacle.radius)
+        newY = newY + (dirY* obstacle.radius)
+    end
+
     trigger.x = newX
     trigger.y = newY
     trigger.body:setLinearVelocity(0, 0)
     trigger.body:setPosition(newX, newY)
+end
+
+
+function getRectPosition()
+end
+
+function getSpherePosition()
 end
