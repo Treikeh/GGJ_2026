@@ -18,6 +18,8 @@ screenHeight = 480
 local gravityForce = 400
 local materials = {}
 
+local winTimer = 0
+
 local gameState = {
     menu = true, 
     running = false,
@@ -29,6 +31,11 @@ function love.load()
     love.window.setTitle("Weeeee!!")
     love.window.setMode(screenWidth, screenHeight)
 
+    defaultFont = love.graphics.newFont(12) 
+    
+    BGColor = getRandomColor()
+    TextColor = getRandomColor()
+
     setRandomBG()
 
     world = love.physics.newWorld(0, gravityForce, true)
@@ -38,6 +45,7 @@ function love.load()
     spawnBall()
     spawnTrigger()
     spawnObstacles()
+
 end
 
 
@@ -67,37 +75,53 @@ function love.update(dt)
 
         updateBall(maskMaterials)
         world:update(dt)
+    elseif gameState["reset"] then
+        
+        winTimer = winTimer + dt
+
+        if winTimer > 3 then
+            resetGame()
+        end
     end
 end
 
 
 function love.keypressed(key)
     if gameState["menu"] then
-        if key == "w" then
-            changeGameState("running")
-        end
+        resetGame()
     elseif gameState["running"] then
         if key == "1" then currentBrush = 1 end
         if key == "2" then currentBrush = 2 end
         if key == "3" then currentBrush = 3 end
+
+        if key == "a" then currentBrush = 1 end
+        if key == "w" then currentBrush = 2 end
+        if key == "d" then currentBrush = 3 end
         
-        resetKey(key)
+        if key == "r" then
+            resetGame()
+        end
+
+        if key == "y" then
+            changeGameState("reset")
+        end
 
     elseif gameState["reset"] then
-        resetKey(key)
+        resetGame()
     end
 end
 
-function resetKey(key)
-    if key == "r" then
-        lineSegments = {}
-        resetBall()
-        resetTrigger()
-        resetObstacles()
-        changeGameState("running")
-        setRandomBG()
-        resetMaterials()
-    end
+function resetGame()
+    lineSegments = {}
+    resetBall()
+    resetTrigger()
+    resetObstacles()
+    changeGameState("running")
+    setRandomBG()
+    resetMaterials()
+    loadResetMenu()
+
+    winTimer = 0
 end
 
 
