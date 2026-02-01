@@ -80,7 +80,7 @@ function getRandomWinQuote()
         "YOU DID IT",
         "YEA",
         ":)",
-        "🧇",
+        "VAFFEL",
     }
 
     return winQuotes[love.math.random(#winQuotes)]
