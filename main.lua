@@ -39,6 +39,7 @@ function love.load()
     setRandomBG()
 
     world = love.physics.newWorld(0, gravityForce, true)
+    world:setSleepingAllowed(false)
 
     maskToolInit()
 
