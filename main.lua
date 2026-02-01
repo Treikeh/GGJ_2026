@@ -44,8 +44,8 @@ function love.load()
     maskToolInit()
 
     spawnBall()
-    spawnTrigger()
     spawnObstacles()
+    spawnTrigger(obstacles)
 
 end
 
@@ -117,8 +117,8 @@ end
 function resetGame()
     lineSegments = {}
     resetBall()
-    resetTrigger()
     resetObstacles()
+    resetTrigger(obstacles)
     changeGameState("running")
     setRandomBG()
     resetMaterials()
