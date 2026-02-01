@@ -9,14 +9,12 @@ local obstacles = {}
 local rectMinSize, rectMaxSize = 20, 200
 local minRadius, maxRadius = 20, 100
 
-local msg = ""
 
 
 function spawnObstacles()
     msg = ""
     for i = 1, love.math.random(minObstacles, maxObstacles) do
         local type = getRandomObstacleType()
-        msg = msg .. type
         if type == 1 or type == 3 then
             createRectangleObstacle()
         elseif type == 2 then
@@ -27,7 +25,6 @@ end
 
 
 function drawObstacles()
-    love.graphics.print(msg, 100, 100)
     for i = 1, #obstacles do
         local obstacle = obstacles[i]
         if obstacle.type == 1 then
