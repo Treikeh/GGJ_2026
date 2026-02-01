@@ -32,7 +32,7 @@ function love.load()
     love.window.setMode(screenWidth, screenHeight)
 
     defaultFont = love.graphics.newFont(12) 
-    
+
     BGColor = getRandomColor()
     TextColor = getRandomColor()
 
@@ -79,7 +79,7 @@ function love.update(dt)
         
         winTimer = winTimer + dt
 
-        if winTimer > 3 then
+        if winTimer > 1 then
             resetGame()
         end
     end
