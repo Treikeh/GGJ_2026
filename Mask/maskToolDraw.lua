@@ -6,13 +6,12 @@ function maskToolDraw()
     love.graphics.setColor(0, 1, 0)
     local linePositions = convertToIntArray(maskToolPositions)
 
+    setToMaterialColor()
+    drawMasks()
     if #linePositions >= 4 then
-        
-        setToMaterialColor()
         if drawing then
             love.graphics.line(linePositions)
         end
-        drawMasks()
     end
 end
 
@@ -39,7 +38,7 @@ function drawMasks()
 end
 
 function drawMaskShape(vertices)
-    if #maskToolPositions < 3 then return end
+    if #vertices < 3 then return end
     local ok, triangles = pcall(love.math.triangulate, vertices)
 
     if not ok then
