@@ -89,6 +89,7 @@ end
 function love.keypressed(key)
     if gameState["menu"] then
         resetGame()
+    
     elseif gameState["running"] then
         if key == "1" then currentBrush = 1 end
         if key == "2" then currentBrush = 2 end
@@ -99,7 +100,8 @@ function love.keypressed(key)
         if key == "d" then currentBrush = 3 end
         
         if key == "r" then
-            resetGame()
+            winQuote = getRandomLoseQuote()
+            changeGameState("reset")
         end
 
         if key == "y" then

@@ -15,6 +15,7 @@ function drawUI()
 
     local xCenter =  (screenWidth / 2)
     local xPos = xCenter - matSelectWidth * (totalUsage / usageDivider) / 2
+    local yPos = screenHeight - matSelectHeight * 2 + 20
     
     for i = 1, 3 do
         local color = maskMaterials[i].color
@@ -27,7 +28,6 @@ function drawUI()
 
         love.graphics.setColor(color.r, color.g, color.b)
         -- local xPos = (screenWidth / 3) + (i - 1) * 100
-        local yPos = screenHeight - matSelectHeight * 2
 
         love.graphics.rectangle("fill", xPos, yPos, matSelectWidth * usageLeft  / usageDivider, matSelectHeight, cornerRadius, cornerRadius)
         -- Select box
@@ -37,7 +37,7 @@ function drawUI()
 
             local text = love.graphics.newText(love.graphics.getFont(), maskMaterials[i].name)
             local textWidth = text:getWidth()
-            love.graphics.draw(text, xCenter - textWidth/2, yPos + matSelectHeight + 7)
+            love.graphics.draw(text, xCenter - textWidth/2, yPos - matSelectHeight + 20)
         end
 
         -- Material name under the boxes

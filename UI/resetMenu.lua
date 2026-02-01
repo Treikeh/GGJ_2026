@@ -3,7 +3,7 @@ local panelPadding = 50
 
 local BGColor
 local TextColor
-local winQuote
+winQuote = ""
 
 function loadResetMenu()
     BGColor = getRandomColor()
@@ -71,4 +71,24 @@ function getRandomWinQuote()
     }
 
     return winQuotes[love.math.random(#winQuotes)]
+end
+
+function getRandomLoseQuote()
+    local loseQuotes = {
+        "DARN",
+        "OOPS",
+        "RESET!",
+        "BOOO",
+        "NO",
+        "AW",
+        ":(",
+        "...",
+        "LOSER!",
+        "GAH!",
+        "OUCH",
+        "MISS",
+        "L",
+    }
+
+    return loseQuotes[love.math.random(#loseQuotes)]
 end
