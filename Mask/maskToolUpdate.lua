@@ -126,26 +126,26 @@ end
 function getCrossPointIndexes(linePoints)
     local crossPointIndexes = {}
 
-    local skip = 0
+    local skip = false
 
     for i = 2, #linePoints - 1, 1 do
+        skip = true
         for j = 2, #linePoints - 1, 1 do
 
             for k = 1, #crossPointIndexes, 1 do
                 if crossPointIndexes[k] < j + 10 and crossPointIndexes[k] > j - 10 then
-                    goto continue
+                    skip = true
                 end
             end
 
             if i < j + 10 and i > j - 10 then
-                goto continue
+                skip = true
             end
             
-            if squareDistance(linePoints[i], linePoints[j]) < POINTDENSITY * 1.9 then
+            if not skip and squareDistance(linePoints[i], linePoints[j]) < POINTDENSITY * 1.9 then
                 table.insert(crossPointIndexes, j)
             end
-
-            ::continue::
+            skip = false
         end
     end
 

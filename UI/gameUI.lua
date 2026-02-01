@@ -24,50 +24,48 @@ function drawUI()
 
     hovering = false
     
+    local skip = false
     for i = 1, 3 do
         local color = maskMaterials[i].color
         local usageLeft = maskMaterials[i].usageLeft
 
-        if usageLeft <= 10 then
-            goto continue
-            return
-        end
+        if usageLeft > 10 then
+            love.graphics.setColor(color.r, color.g, color.b)
+            -- local xPos = (screenWidth / 3) + (i - 1) * 100
 
-        love.graphics.setColor(color.r, color.g, color.b)
-        -- local xPos = (screenWidth / 3) + (i - 1) * 100
+            local currentWidth = matSelectWidth * usageLeft  / usageDivider
 
-        local currentWidth = matSelectWidth * usageLeft  / usageDivider
+            love.graphics.rectangle("fill", xPos, yPos, currentWidth, matSelectHeight, cornerRadius, cornerRadius)
+            -- Select box
+            if currentBrush == i then
+                love.graphics.setColor(1, 1, 1)
+                love.graphics.rectangle("line", xPos, yPos, currentWidth, matSelectHeight, cornerRadius, cornerRadius)
 
-        love.graphics.rectangle("fill", xPos, yPos, currentWidth, matSelectHeight, cornerRadius, cornerRadius)
-        -- Select box
-        if currentBrush == i then
-            love.graphics.setColor(1, 1, 1)
-            love.graphics.rectangle("line", xPos, yPos, currentWidth, matSelectHeight, cornerRadius, cornerRadius)
-
-            local text = love.graphics.newText(love.graphics.getFont(), maskMaterials[i].name)
-            local textWidth = text:getWidth()
-            love.graphics.draw(text, xCenter - textWidth/2, yPos - matSelectHeight + 20)
-        end
-
-        if mouseX > xPos and mouseX < xPos + currentWidth then
-            if mouseY > yPos and mouseY < yPos + matSelectHeight then
-                if love.mouse.isDown(1) then
-                    if not holding then
-                        currentBrush = i
-                    end
-                else
-                    holding = false
-                end
-
-                hovering = true
+                local text = love.graphics.newText(love.graphics.getFont(), maskMaterials[i].name)
+                local textWidth = text:getWidth()
+                love.graphics.draw(text, xCenter - textWidth/2, yPos - matSelectHeight + 20)
             end
+
+            if mouseX > xPos and mouseX < xPos + currentWidth then
+                if mouseY > yPos and mouseY < yPos + matSelectHeight then
+                    if love.mouse.isDown(1) then
+                        if not holding then
+                            currentBrush = i
+                        end
+                    else
+                        holding = false
+                    end
+
+                    hovering = true
+                end
+            end
+
+            -- Material name under the boxes
+            --love.graphics.print(maskMaterials[i].name, xPos, yPos + h + 5)
+
+            xPos = xPos + matSelectWidth * (usageLeft / usageDivider)
         end
 
-        -- Material name under the boxes
-        --love.graphics.print(maskMaterials[i].name, xPos, yPos + h + 5)
-
-        xPos = xPos + matSelectWidth * (usageLeft / usageDivider)
-        ::continue::
     end
 
     if not hovering and love.mouse.isDown(1) then

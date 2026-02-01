@@ -1,6 +1,6 @@
+require "Mask.maskToolUpdate"
 require "Mask.maskToolData"
 require "Mask.maskToolDraw"
-require "Mask.maskToolUpdate"
 require "Mask.maskMaterials"
 
 require "Ball.endTrigger"
