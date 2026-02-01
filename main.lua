@@ -29,7 +29,7 @@ local gameState = {
 
 function love.load()
     love.window.setTitle("Khe Tiss")
-    love.window.setMode(screenWidth, screenHeight)
+    --love.window.setMode(screenWidth, screenHeight)
 
     defaultFont = love.graphics.newFont(12)
 
