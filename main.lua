@@ -11,7 +11,7 @@ require "UI.mainMenu"
 require "UI.resetMenu"
 require "UI.gameUI"
 
-
+time = 0
 screenWidth = 720
 screenHeight = 480
 
@@ -31,11 +31,12 @@ function love.load()
     love.window.setTitle("Khe Tiss")
     love.window.setMode(screenWidth, screenHeight)
 
-    defaultFont = love.graphics.newFont(12) 
+    defaultFont = love.graphics.newFont(12)
 
     BGColor = getRandomColor()
     TextColor = getRandomColor()
 
+    createShader()
     setRandomBG()
 
     world = love.physics.newWorld(0, gravityForce, true)
@@ -71,6 +72,7 @@ end
 
 
 function love.update(dt)
+    time = time + dt
     maskToolUpdate(dt)
     if gameState["running"] then
 

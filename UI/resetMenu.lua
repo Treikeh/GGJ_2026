@@ -18,7 +18,7 @@ function drawResetMenu()
     love.graphics.setColor(BGColor.r, BGColor.g, BGColor.b)
     local width = screenWidth - (panelPadding * 2)
     local height = screenHeight - (panelPadding * 2)
-    love.graphics.rectangle("fill", panelPadding, panelPadding, width, height, cornerRadius, cornerRadius)
+    --love.graphics.rectangle("fill", panelPadding, panelPadding, width, height, cornerRadius, cornerRadius)
 
     -- Press start text
     
