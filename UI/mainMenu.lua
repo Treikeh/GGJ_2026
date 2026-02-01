@@ -1,8 +1,11 @@
+local cornerRadius = 15
 local panelPadding = 50
 
 function drawMainMenu()
     -- Background panel
-    love.graphics.rectangle("fill", panelPadding, panelPadding, screenWidth - (panelPadding * 2), screenHeight - (panelPadding * 2))
+    local width = screenWidth - (panelPadding * 2)
+    local height = screenHeight - (panelPadding * 2)
+    love.graphics.rectangle("fill", panelPadding, panelPadding, width, height, cornerRadius, cornerRadius)
 
     -- Press start text
     love.graphics.setColor(0, 0, 0)
