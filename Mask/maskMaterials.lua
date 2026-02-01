@@ -24,9 +24,9 @@ function resetMaterials()
 
     local totalAmount = 3000
 
-    local leftMatAmount = love.math.random(totalAmount /2)
-    local upMatAmount = love.math.random(totalAmount /3 * 2 - leftMatAmount)
-    local rightMatAmount = love.math.random(totalAmount - leftMatAmount - upMatAmount)
+    local leftMatAmount = love.math.random(300, totalAmount - 600)
+    local upMatAmount = love.math.random(300, totalAmount - leftMatAmount - 300)
+    local rightMatAmount = totalAmount - leftMatAmount - upMatAmount
 
     addMaterial("Left", leftMatAmount, getRandomColor())
     addMaterial("Up", upMatAmount, getRandomColor())
