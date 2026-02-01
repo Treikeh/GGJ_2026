@@ -1,8 +1,11 @@
+require "Functionality.randomize"
+
 local trigger = {
     x = 100,
     y = 300,
-    w = 80,
-    h = 40,
+    w = 50,
+    h = 50,
+    color = {r = 1, g = 1, b = 1}
 }
 
 local message = ""
@@ -15,13 +18,17 @@ function spawnTrigger()
     trigger.fixture:setUserData("Trigger")
     trigger.fixture:setSensor(true)
 
+    trigger.color = getRandomColor()
+
     world:setCallbacks(beginContact, endContact)
 end
 
 
 function drawTrigger()
-    love.graphics.setColor(1, 0, 0)
-    love.graphics.polygon("fill", trigger.body:getWorldPoints(trigger.shape:getPoints()))
+    love.graphics.setColor(trigger.color.r, trigger.color.g, trigger.color.b)
+    love.graphics.rectangle("fill", trigger.x - trigger.w / 2, trigger.y - trigger.h / 2, trigger.w, trigger.h)
+    love.graphics.setColor(1, 1, 1)
+    love.graphics.rectangle("line", trigger.x - trigger.w / 2, trigger.y - trigger.h / 2, trigger.w, trigger.h)
     
     love.graphics.setColor(1, 1, 1)
     love.graphics.print(message, 40, 100)
@@ -49,10 +56,17 @@ end
 
 
 function resetTrigger()
-    -- Spawn trigger in new position
+    randomizeTriggerPos()
+    trigger.color = getRandomColor()
+end
+
+
+function randomizeTriggerPos()
     local spawnPadding = 100
     local newX = love.math.random(spawnPadding, screenWidth - spawnPadding)
     local newY = love.math.random(spawnPadding, screenHeight - spawnPadding)
+    trigger.x = newX
+    trigger.y = newY
     trigger.body:setLinearVelocity(0, 0)
     trigger.body:setPosition(newX, newY)
 end

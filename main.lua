@@ -5,6 +5,7 @@ require "Mask.maskMaterials"
 
 require "Ball.endTrigger"
 require "Ball.ball"
+require "Ball.obstacles"
 
 require "UI.mainMenu"
 require "UI.resetMenu"
@@ -14,11 +15,12 @@ require "UI.gameUI"
 screenWidth = 720
 screenHeight = 480
 
+local gravityForce = 400
 local materials = {}
 
 local gameState = {
-    menu = false, 
-    running = true,
+    menu = true, 
+    running = false,
     reset = false,
 }
 
@@ -29,12 +31,13 @@ function love.load()
 
     setRandomBG()
 
-    world = love.physics.newWorld(0, 9.8 * 40, true)
+    world = love.physics.newWorld(0, gravityForce, true)
 
     maskToolInit()
 
     spawnBall()
-    --spawnTrigger()
+    spawnTrigger()
+    spawnObstacles()
 end
 
 
@@ -46,7 +49,8 @@ function love.draw()
         drawMainMenu()
     elseif gameState["running"] then
         maskToolDraw()
-        --drawTrigger()
+        drawObstacles()
+        drawTrigger()
         drawBall()
 
         drawUI()
@@ -88,7 +92,8 @@ function resetKey(key)
     if key == "r" then
         lineSegments = {}
         resetBall()
-        --resetTrigger()
+        resetTrigger()
+        resetObstacles()
         changeGameState("running")
         setRandomBG()
     end

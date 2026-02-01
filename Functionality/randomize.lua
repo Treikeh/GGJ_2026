@@ -14,3 +14,16 @@ function setRandomBG()
     color = getRandomColor()
     love.graphics.setBackgroundColor(color.r, color.g, color.b)
 end
+
+
+function getRandomPosition(screenPadding)
+    local x = love.math.random(screenPadding, screenWidth - screenPadding)
+    local y = love.math.random(screenPadding, screenHeight - screenPadding)
+    return x, y
+end
+
+function getRandomSize(min, max)
+    local x = love.math.random(min, max)
+    local y = love.math.random(min, max)
+    return x, y
+end

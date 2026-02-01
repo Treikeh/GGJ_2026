@@ -33,6 +33,8 @@ function drawBall()
 
     love.graphics.setColor(ball.color.r, ball.color.g, ball.color.b)
     love.graphics.circle("fill", ball.body:getX(), ball.body:getY(), ball.shape:getRadius())
+    love.graphics.setColor(1, 1, 1)
+    love.graphics.circle("line", ball.body:getX(), ball.body:getY(), ball.shape:getRadius())
 end
 
 
@@ -72,9 +74,9 @@ function updateBall(materials)
     if ball.matType == 0 then
         applyNoneMaterial()
     elseif ball.matType == 1 then
-        applyUpsideDownMaterial()
-    elseif ball.matType == 2 then
         applySpaceMaterial()
+    elseif ball.matType == 2 then
+        applyUpsideDownMaterial()
     end
 
     debugMsg = string.format("mat type: %s", ball.matType)
