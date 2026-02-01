@@ -41,6 +41,8 @@ function beginContact(fixtureA, fixtureB, contact)
     if tag1 == "Trigger" and tag2 == "Ball" then
         message = tag1 .. " collided with " .. tag2
         changeGameState("reset")
+        levelsWon = levelsWon + 1
+        winStreak = winStreak + 1
     end
 end
 

@@ -103,6 +103,7 @@ function love.keypressed(key)
         if key == "d" then currentBrush = 3 end
         
         if key == "r" then
+            winStreak = 0
             winQuote = getRandomLoseQuote()
             changeGameState("reset")
         end

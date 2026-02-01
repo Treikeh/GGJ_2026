@@ -5,6 +5,9 @@ local BGColor
 local TextColor
 winQuote = ""
 
+levelsWon = 0
+winStreak = 0
+
 function loadResetMenu()
     BGColor = getRandomColor()
     TextColor = getRandomColor()
@@ -24,15 +27,24 @@ function drawResetMenu()
     
     love.graphics.setColor(TextColor.r, TextColor.g, TextColor.b)
 
-    LOVEFont = love.graphics.newFont(1000/#winQuote)
+    drawCenteredText(winQuote, 1000/#winQuote, (screenHeight / 2))
+    drawCenteredText("Won: " .. levelsWon, 20, (screenHeight / 2) + 100)
+
+    if winStreak > 1 then
+        drawCenteredText("Streak: " .. winStreak, 20, (screenHeight / 2) + 120)
+    end
+end
+
+function drawCenteredText(text, fontSize, yPos)
+    LOVEFont = love.graphics.newFont(fontSize)
     love.graphics.setFont(LOVEFont)
-    local text = love.graphics.newText(love.graphics.getFont(), winQuote)
+    local textObj = love.graphics.newText(love.graphics.getFont(), text)
     love.graphics.setFont(defaultFont)
 
     -- Draw text at the center of the screen
-    local textWidth = text:getWidth()
-    local textHeight = text:getHeight()
-    love.graphics.draw(text, (screenWidth / 2) - (textWidth / 2), (screenHeight / 2) - (textHeight / 2))
+    local textWidth = textObj:getWidth()
+    local textHeight = textObj:getHeight()
+    love.graphics.draw(textObj, (screenWidth / 2) - (textWidth / 2), yPos - (textHeight / 2))
 end
 
 function getRandomWinQuote()
