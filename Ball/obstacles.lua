@@ -3,64 +3,122 @@ require "Functionality.randomize"
 
 local spawnPadding = 50
 
-local minSize, maxSize = 20, 200
+local minObstacles, maxObstacles = 7, 9
 local obstacles = {}
+
+local rectMinSize, rectMaxSize = 20, 200
+local minRadius, maxRadius = 20, 100
+
+local msg = ""
 
 
 function spawnObstacles()
-    for i = 1, 7 do
-        local xPos, yPos = getRandomPosition(spawnPadding)
-        local xSize, ySize = getRandomSize(minSize, maxSize)
-        local body = love.physics.newBody(world, xPos, yPos, "static")
-        local shape = love.physics.newRectangleShape(xSize, ySize)
-        local fixture = love.physics.newFixture(body, shape)
-        table.insert(obstacles, {
-            size = {x = xSize, y = ySize},
-            pos = {x = xPos, y = yPos},
-            color = getRandomColor(),
-            body = body,
-            shape = shape,
-            fixture = fixture,
-        }
-        )
+    msg = ""
+    for i = 1, love.math.random(minObstacles, maxObstacles) do
+        local type = getRandomObstacleType()
+        msg = msg .. type
+        if type == 1 or type == 3 then
+            createRectangleObstacle()
+        elseif type == 2 then
+            createSphereObstalce()
+        end
     end
 end
 
 
 function drawObstacles()
+    love.graphics.print(msg, 100, 100)
     for i = 1, #obstacles do
-        local xPos, yPos = obstacles[i].pos.x, obstacles[i].pos.y
-        local xSize, ySize = obstacles[i].size.x, obstacles[i].size.y
-        local color = obstacles[i].color
-        love.graphics.setColor(color.r, color.g, color.b)
-        love.graphics.rectangle("fill", xPos - xSize / 2, yPos - ySize / 2, xSize, ySize)
-        love.graphics.setColor(0, 0, 0)
-        love.graphics.rectangle("line", xPos - xSize / 2, yPos - ySize / 2, xSize, ySize)
+        local obstacle = obstacles[i]
+        if obstacle.type == 1 then
+            drawRectObstacle(obstacle)
+        elseif obstacle.type == 2 then
+            drawSphereObstacle(obstacle)
+        end
     end
 end
 
 
 
 function resetObstacles()
+    destoryObstacles()
+    obstacles = {}
+    spawnObstacles()
+end
+
+
+function destoryObstacles()
     for i = 1, #obstacles do
         local obstacle = obstacles[i]
-        local xPos, yPos = getRandomPosition(spawnPadding)
-        local xSize, ySize = getRandomSize(minSize, maxSize)
-        local color = getRandomColor()
-
-        obstacle.pos.x = xPos
-        obstacle.pos.y = yPos
-        obstacle.size.x = xSize
-        obstacle.size.y = ySize
-        obstacle.color = color
-
-
-        local shape = love.physics.newRectangleShape(xSize, ySize)
-        local fixture = love.physics.newFixture(obstacle.body, shape)
-
         obstacle.fixture:destroy()
-        obstacle.shape = shape
-        obstacle.fixture = fixture
-        obstacle.body:setPosition(xPos, yPos)
     end
+end
+
+
+function getRandomObstacleType()
+    return love.math.random(1, 3)
+end
+
+
+-- RECTANGLE
+function createRectangleObstacle()
+        local x, y = getRandomPosition(spawnPadding)
+        local w, h = getRandomSize(rectMinSize, rectMaxSize)
+        local body = love.physics.newBody(world, x, y, "static")
+        local shape = love.physics.newRectangleShape(w, h)
+        local fixture = love.physics.newFixture(body, shape)
+        -- Insert obstacle into table
+        table.insert(obstacles, {
+            type = 1,
+            pos = {x = x, y = y},
+            size = {w = w, h = h},
+            color = getRandomColor(),
+            body = body,
+            shape = shape,
+            fixture = fixture,
+        }
+        )
+end
+
+
+function drawRectObstacle(rect)
+    local x, y = rect.pos.x, rect.pos.y
+    local w, h = rect.size.w, rect.size.h
+    local color = rect.color
+    love.graphics.setColor(color.r, color.g, color.b)
+    love.graphics.rectangle("fill", x - w / 2, y - h / 2, w, h)
+    love.graphics.setColor(0, 0, 0)
+    love.graphics.rectangle("line", x - w / 2, y - h / 2, w, h)
+end
+
+
+-- SPHERE
+function createSphereObstalce()
+    local x, y = getRandomPosition(spawnPadding)
+    local r = love.math.random(minRadius, maxRadius)
+    local body = love.physics.newBody(world, x, y, "static")
+    local shape = love.physics.newCircleShape(r)
+    local fixture = love.physics.newFixture(body, shape)
+    -- Insert obstacle into table
+        table.insert(obstacles, {
+            type = 2,
+            pos = {x = x, y = y},
+            radius = r,
+            color = getRandomColor(),
+            body = body,
+            shape = shape,
+            fixture = fixture,
+        }
+        )
+end
+
+
+function drawSphereObstacle(sphere)
+    local x, y = sphere.pos.x, sphere.pos.y
+    local r = sphere.radius
+    local color = sphere.color
+    love.graphics.setColor(color.r, color.g, color.b)
+    love.graphics.circle("fill", x, y, r)
+    love.graphics.setColor(0, 0, 0)
+    love.graphics.circle("line", x, y, r)
 end

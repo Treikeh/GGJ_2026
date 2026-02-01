@@ -67,20 +67,13 @@ function updateBall(materials)
     end
 
     -- Change physics based on the current material
-    if ball.matType == 0 then
-        applyNoneMaterial()
-    elseif ball.matType == 1 then
+    if ball.matType == 1 then
         applyLeftMaterial()
     elseif ball.matType == 2 then
         applyUpMaterial()
     elseif ball.matType == 3 then
         applyRightMaterial()
     end
-end
-
-
-function applyNoneMaterial()
-    ball.body:setGravityScale(1)
 end
 
 
