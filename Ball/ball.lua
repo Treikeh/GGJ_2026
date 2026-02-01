@@ -9,8 +9,6 @@ local ball = {
     matType = 0,
 }
 
-local debugMsg = ""
-
 function spawnBall()
     ball.body = love.physics.newBody(world, ball.x, ball.y, "dynamic")
     ball.shape = love.physics.newCircleShape(ball.r)
@@ -29,8 +27,6 @@ function resetBall()
 end
 
 function drawBall()
-    love.graphics.print(debugMsg, 40, 40)
-
     love.graphics.setColor(ball.color.r, ball.color.g, ball.color.b)
     love.graphics.circle("fill", ball.body:getX(), ball.body:getY(), ball.shape:getRadius())
     love.graphics.setColor(1, 1, 1)
@@ -74,12 +70,12 @@ function updateBall(materials)
     if ball.matType == 0 then
         applyNoneMaterial()
     elseif ball.matType == 1 then
-        applySpaceMaterial()
+        applyUpMaterial()
     elseif ball.matType == 2 then
-        applyUpsideDownMaterial()
+        applyLeftMaterial()
+    elseif ball.matType == 3 then
+        applyRightMaterial()
     end
-
-    debugMsg = string.format("mat type: %s", ball.matType)
 end
 
 
@@ -88,13 +84,17 @@ function applyNoneMaterial()
 end
 
 
-function applyUpsideDownMaterial()
+function applyUpMaterial()
     ball.body:setGravityScale(-3)
 end
 
 
-function applySpaceMaterial()
-    ball.body:setGravityScale(0)
+function applyLeftMaterial()
+    ball.body:applyForce(-500, 0)
+end
+
+function applyRightMaterial()
+    ball.body:applyForce(500, 0)
 end
 
 

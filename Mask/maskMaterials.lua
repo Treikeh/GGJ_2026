@@ -22,9 +22,9 @@ end
 function resetMaterials()
     maskMaterials = {}
 
-    addMaterial("Space", 1000, getRandomColor())
-    addMaterial("Bab", 1000, getRandomColor())
-    addMaterial("ABA", 1000, getRandomColor())
+    addMaterial("Up", 1000, getRandomColor())
+    addMaterial("Right", 1000, getRandomColor())
+    addMaterial("Left", 1000, getRandomColor())
 end
 
 maskMaterials = {}
