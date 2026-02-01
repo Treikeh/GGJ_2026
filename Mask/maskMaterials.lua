@@ -22,9 +22,15 @@ end
 function resetMaterials()
     maskMaterials = {}
 
-    addMaterial("Left", 1000, getRandomColor())
-    addMaterial("Up", 1000, getRandomColor())
-    addMaterial("Right", 1000, getRandomColor())
+    local totalAmount = 3000
+
+    local leftMatAmount = love.math.random(totalAmount /2)
+    local upMatAmount = love.math.random(totalAmount /3 * 2 - leftMatAmount)
+    local rightMatAmount = love.math.random(totalAmount - leftMatAmount - upMatAmount)
+
+    addMaterial("Left", leftMatAmount, getRandomColor())
+    addMaterial("Up", upMatAmount, getRandomColor())
+    addMaterial("Right", rightMatAmount, getRandomColor())
 end
 
 maskMaterials = {}

@@ -87,7 +87,7 @@ function getRandomLoseQuote()
         "GAH!",
         "OUCH",
         "MISS",
-        "L",
+        ":)",
     }
 
     return loseQuotes[love.math.random(#loseQuotes)]

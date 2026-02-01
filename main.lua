@@ -113,6 +113,20 @@ function love.keypressed(key)
     end
 end
 
+function love.wheelmoved(x, y)
+    if y > 0 then
+        currentBrush = currentBrush - 1
+        if currentBrush < 1 then
+            currentBrush = 3
+        end
+    elseif y < 0 then
+        currentBrush = currentBrush + 1
+        if currentBrush > 3 then
+            currentBrush = 1
+        end
+    end
+end
+
 function resetGame()
     lineSegments = {}
     resetBall()
