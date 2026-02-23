@@ -9,7 +9,7 @@ function drawMainMenu()
 
     local LOVEFont = love.graphics.newFont(100)
     love.graphics.setFont(LOVEFont)
-    local text = love.graphics.newText(love.graphics.getFont(), "Khe Tiss")
+    local text = love.graphics.newText(love.graphics.getFont(), "Pilasso")
     local textWidth = text:getWidth()
     local textHeight = text:getHeight()
     love.graphics.draw(text, (screenWidth / 2) - (textWidth / 2), 0 + 75)
